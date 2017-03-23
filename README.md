@@ -42,15 +42,37 @@ these steps:
     folder, you will see the script that will be used to create the disk image.
     Now, create a base root filesystem, based on Ubuntu 12.04 (precise)
 
-        ubuntu@xenial ~> mkdir base
-        ubuntu@xenial ~> sudo debootstrap --include=linux-image-generic precise base
+        ubuntu@ubuntu-xenial ~> mkdir base
+        ubuntu@ubuntu-xenial ~> sudo debootstrap --include=linux-image-generic precise base
 
- 5. Now run the script
+ 5. Now run the script. At some point, it will prompt you to insert the root
+    password. Type in a password of your choice.
 
-        ubuntu@xenial ~> sudo bash create-image.sh
+        ubuntu@ubuntu-xenial ~> sudo bash create-image.sh
+
 
  6. When the script finishes, you will see a file named *disk.img* in teh HOME
     folder. You can mv this file *outside* the VM, using the shared folder
     */vagrant*
 
-        ubuntu@xenial ~> mv disk.img /vagrant/
+        ubuntu@ubuntu-xenial ~> mv disk.img /vagrant/
+
+ 7. Now, you can exit the VM, typing exit. Since the VM is running in the
+    background, it will be using resources, so you might want to shut it down.
+    
+        ubuntu@ubuntu-xenial ~> sudo shutdown -h now
+        user@host ~/debootstrap-test> vagrant halt
+
+## Booting up the disk image
+
+The easiest way to test the image just created is using [QEMU](http://www.qemu-project.org/).
+After installing it, you can boot the VM with this command:
+
+    user@host ~/debootstrap-test> qemu-system-x86_64 -drive format=raw,file=disk.img
+
+Another alternative could be using VirtualBox, although you might need to convert
+the disk image to a format that can be handled by virtualbox:
+
+    user@host ~/debootstrap-test> VBoxManage clonehd --format RAW disk.vdi disk.img
+
+Now create a VM and assignt *disk.vdi* as its primary hard disk drive.
