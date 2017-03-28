@@ -41,8 +41,8 @@ create_debootstrap() {
 }
 
 create_empty_disk() {
-    dd if=/dev/zero of=${IMAGE_NAME} bs=1024 count=1 seek=5119k
-    parted -s disk.img -- mklabel msdos mkpart primary 1m 5g toggle 1 boot
+    dd if=/dev/zero of=${IMAGE_NAME} bs=1024 count=1 seek=2047k
+    parted -s disk.img -- mklabel msdos mkpart primary 1m 2g toggle 1 boot
 }
 
 mount_loop_device() {
