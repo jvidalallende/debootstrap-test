@@ -1,3 +1,5 @@
 .vagrant
 *.log
 *.img
+*.qcow2
+*.vmdk
