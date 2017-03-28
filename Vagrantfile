@@ -12,7 +12,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
   end
 
-  # Provision VM. Use regular user, not root (passwordless sudo is available)
   config.vm.provision "shell", path: "bootstrap.bash", privileged: false
-  config.vm.provision "file", source: "create-image.sh", destination: "~/create-image.sh"
+  config.vm.provision "file", source: "fstab", destination: "/tmp/fstab"
+  config.vm.provision "file", source: "create-image.bash", destination: "~/create-image.bash"
+
+  # This is not provisioning, but it is very convenient to run the script
+  # if everything goes fine, doing "vagrant up && vagrant destroy -f" will
+  # work as a process that produces an image
+  # NOTE: the script is run as root!
+  config.vm.provision "shell", inline: "bash create-image.bash", privileged: true
 end

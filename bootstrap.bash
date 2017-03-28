@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function install_packages {
-    sudo apt-get update && sudo apt-get install -y debootstrap 
+    sudo apt-get update && sudo apt-get install -y debootstrap libguestfs-tools
 }
 
 # Execution section
