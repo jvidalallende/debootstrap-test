@@ -62,7 +62,9 @@ install_packages() {
         tcpdump \
         cloud-init \
         wget \
-        grub2-common
+        grub2-common \
+        openssh-server \
+        openssh-client
 }
 
 setup_grub() {
