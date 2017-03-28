@@ -2,7 +2,7 @@
 
 This is a setup for an automated system that generates disk images from
 scratch. For complete isolation, a VM (based on Ubuntu 16.04) will be booted up,
-then the target system (in this example based on Ubuntu 12.04) will be created,
+then the target system (in this example based on Ubuntu 14.04) will be created,
 and copied to a shared folder, so that it is accessible from outside the VM.
 
 ## Dependencies
@@ -32,47 +32,22 @@ these steps:
     times.
 
         user@host ~> cd debootstrap-test
-        user@host ~/debootstrap-test> vagrant up
+        user@host ~/debootstrap-test> vagrant up && vagrant destroy -f
 
- 3. SSH into the VM:
+ 3. You are done! You should see a *qcow2* file. That is the disk file that you
+    can use for your VM.
 
-        user@host ~/debootstrap-test> vagrant ssh
-
- 4. Notice that the prompt has changed. You are now *inside* the VM. In the HOME
-    folder, you will see the script that will be used to create the disk image.
-    Now, create a base root filesystem, based on Ubuntu 12.04 (precise)
-
-        ubuntu@ubuntu-xenial ~> mkdir base
-        ubuntu@ubuntu-xenial ~> sudo debootstrap --include=linux-image-generic precise base
-
- 5. Now run the script. At some point, it will prompt you to insert the root
-    password. Type in a password of your choice.
-
-        ubuntu@ubuntu-xenial ~> sudo bash create-image.sh
-
-
- 6. When the script finishes, you will see a file named *disk.img* in teh HOME
-    folder. You can mv this file *outside* the VM, using the shared folder
-    */vagrant*
-
-        ubuntu@ubuntu-xenial ~> mv disk.img /vagrant/
-
- 7. Now, you can exit the VM, typing exit. Since the VM is running in the
-    background, it will be using resources, so you might want to shut it down.
-    
-        ubuntu@ubuntu-xenial ~> sudo shutdown -h now
-        user@host ~/debootstrap-test> vagrant halt
 
 ## Booting up the disk image
 
 The easiest way to test the image just created is using [QEMU](http://www.qemu-project.org/).
 After installing it, you can boot the VM with this command:
 
-    user@host ~/debootstrap-test> qemu-system-x86_64 -drive format=raw,file=disk.img
+    user@host ~/debootstrap-test> qemu-system-x86_64 -machine ubuntu,accel=kvm -drive format=qcow2,file=disk.qcow2 -m 512M -device virtio-net
 
 Another alternative could be using VirtualBox, although you might need to convert
 the disk image to a format that can be handled by virtualbox:
 
-    user@host ~/debootstrap-test> VBoxManage clonehd --format RAW disk.vdi disk.img
+    user@host ~/debootstrap-test> qemu-img convert -f qcow2 -O vmdk disk.qcow2 disk.vmdk
 
-Now create a VM and assignt *disk.vdi* as its primary hard disk drive.
+Now create a VM and assign *disk.vmdk* as its primary hard disk drive.
