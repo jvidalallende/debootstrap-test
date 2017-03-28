@@ -28,6 +28,8 @@ BOOT_DIR="${MOUNT_DIR}/boot"
 RELEASE="trusty"
 # Source /etc/fstab file
 SOURCE_FSTAB="/tmp/fstab"
+# Source /etc/network/interfaces file
+SOURCE_INTERFACES="/tmp/interfaces"
 
 ######################################
 # FUNCTIONS
@@ -52,8 +54,6 @@ mount_loop_device() {
 
 copy_data() {
     cp -r ${BOOTSTRAP_DIR}/* ${MOUNT_DIR}
-    cp ${SOURCE_FSTAB} ${MOUNT_DIR}/etc/fstab
-    chmod 664 ${MOUNT_DIR}/etc/fstab
 }
 
 install_packages() {
@@ -93,6 +93,10 @@ change_password() {
 
 modify_host() {
     chroot ${MOUNT_DIR} bash -c "echo opnfv-sfc > /etc/hostname"
+    cp ${SOURCE_FSTAB} ${MOUNT_DIR}/etc/fstab
+    chmod 664 ${MOUNT_DIR}/etc/fstab
+    cp ${SOURCE_INTERFACES} ${MOUNT_DIR}/etc/network/interfaces
+    chmod 644 ${MOUNT_DIR}/etc/network/interfaces
 }
 
 cleanup() {

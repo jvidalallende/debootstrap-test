@@ -13,7 +13,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision "shell", path: "bootstrap.bash", privileged: false
-  config.vm.provision "file", source: "fstab", destination: "/tmp/fstab"
+  config.vm.provision "file", source: "image-files/fstab", destination: "/tmp/fstab"
+  config.vm.provision "file", source: "image-files/interfaces", destination: "/tmp/interfaces"
   config.vm.provision "file", source: "create-image.bash", destination: "~/create-image.bash"
 
   # This is not provisioning, but it is very convenient to run the script
