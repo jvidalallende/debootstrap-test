@@ -27,7 +27,7 @@ BOOT_DIR="${MOUNT_DIR}/boot"
 # debootstrap release (e.g. precise, trusty, xenial...)
 RELEASE="trusty"
 # Source /etc/fstab file
-SOURCE_FSTAB="/tmp/fstab"
+SOURCE_SSHD_CONFIG="/tmp/sshd_config"
 # Source /etc/network/interfaces file
 SOURCE_INTERFACES="/tmp/interfaces"
 
@@ -95,8 +95,8 @@ change_password() {
 
 modify_host() {
     chroot ${MOUNT_DIR} bash -c "echo opnfv-sfc > /etc/hostname"
-    cp ${SOURCE_FSTAB} ${MOUNT_DIR}/etc/fstab
-    chmod 664 ${MOUNT_DIR}/etc/fstab
+    cp ${SOURCE_SSHD_CONFIG} ${MOUNT_DIR}/etc/ssh/sshd_config
+    chmod 600 ${MOUNT_DIR}/etc/ssh/sshd_config
     cp ${SOURCE_INTERFACES} ${MOUNT_DIR}/etc/network/interfaces
     chmod 644 ${MOUNT_DIR}/etc/network/interfaces
 }

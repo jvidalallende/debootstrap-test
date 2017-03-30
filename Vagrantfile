@@ -13,7 +13,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision "shell", path: "bootstrap.bash", privileged: false
-  config.vm.provision "file", source: "image-files/fstab", destination: "/tmp/fstab"
+  config.vm.provision "file", source: "image-files/sshd_config", destination: "/tmp/sshd_config"
   config.vm.provision "file", source: "image-files/interfaces", destination: "/tmp/interfaces"
   config.vm.provision "file", source: "create-image.bash", destination: "~/create-image.bash"
 
