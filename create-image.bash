@@ -53,7 +53,7 @@ mount_loop_device() {
 }
 
 copy_data() {
-    cp -r ${BOOTSTRAP_DIR}/* ${MOUNT_DIR}
+    cp --recursive --preserve=all ${BOOTSTRAP_DIR}/* ${MOUNT_DIR}
 }
 
 install_packages() {
@@ -108,7 +108,7 @@ cleanup() {
 }
 
 prepare_final_image() {
-    qemu-img convert -f raw -O qcow2 disk.img disk.qcow2 
+    qemu-img convert -f raw -O qcow2 disk.img disk.qcow2
     virt-sparsify --compress disk.qcow2 /vagrant/sf_nsh_euphrates_candidate.qcow2
 }
 
