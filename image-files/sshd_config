@@ -86,3 +86,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
+
+# Setting UseDNS = no speeds up the connections
+# https://superuser.com/questions/166359/top-causes-of-slow-ssh-logins
+UseDNS no
